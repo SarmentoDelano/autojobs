@@ -1,0 +1,45 @@
+# Ambiente virtual
+.venv/
+env/
+venv/
+
+# Arquivos compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Cache de testes
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+coverage.xml
+htmlcov/
+
+# Mypy
+.mypy_cache/
+
+# Arquivos de IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Dados sensíveis (caso use dotenv)
+.env
+.env.*
+
+# Arquivos de build (caso futuramente gere distribuições)
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/

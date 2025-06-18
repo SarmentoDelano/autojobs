@@ -3,6 +3,10 @@
 env/
 venv/
 
+# Banco de dados SQLite
+*.sqlite3
+db.sqlite3
+
 # Arquivos compilados
 __pycache__/
 *.pyc
@@ -11,6 +15,7 @@ __pycache__/
 
 # Logs
 *.log
+scraping_logs/
 
 # Cache de testes
 .pytest_cache/
@@ -43,3 +48,6 @@ dist/
 *.egg-info/
 .eggs/
 pip-wheel-metadata/
+
+# Selenium (caso gere screenshots temporários no futuro)
+selenium_screenshots/

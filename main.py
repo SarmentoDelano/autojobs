@@ -1,12 +1,13 @@
 import sys
 import os
-
-# Adiciona o diretório backend ao sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'backend'))
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-
 import django
+from colorama import Fore, Style, init
+
+# Inicia suporte a cores no terminal (Windows)
+init(autoreset=True)
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'backend'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from core.models import Vaga
@@ -14,115 +15,107 @@ from apis.vagas import fetch_vagas_jobs
 from apis.remoteok import fetch_remoteok_jobs
 from apis.infojobs import fetch_infojobs_jobs
 from apis.gupy import fetch_gupy_jobs
+from apis.programathor import fetch_programathor_jobs
 
+TOTAL = 0
 
 def limpar_banco():
-    print("Limpando banco de dados...")
+    print(f"{Fore.YELLOW}🧹 Limpando banco de dados...")
     Vaga.objects.all().delete()
 
 def salvar_vagas_remoteok():
-    print("Buscando vagas no RemoteOK...")
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no RemoteOK...")
     vagas = fetch_remoteok_jobs("python")
-
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no RemoteOK.\n")
+    TOTAL += len(vagas)
     for vaga in vagas:
-        empresa = vaga.get("empresa")
-        cargo = vaga.get("cargo")
-        descricao = vaga.get("descricao")
-        salario = vaga.get("salario")
-        tags = vaga.get("tags")
-        link = vaga.get("link")
-
-        tags_str = ";".join(tags) if tags else None
-
         Vaga.objects.create(
-            empresa=empresa,
-            cargo=cargo,
-            descricao=descricao,
-            salario=salario,
-            tags=tags_str,
-            link=link,
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
             encontrado_em="RemoteOK"
         )
 
 def salvar_vagas_infojobs():
-    print("Buscando vagas no InfoJobs...")
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no InfoJobs...")
     vagas = fetch_infojobs_jobs("python")
-
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no InfoJobs.\n")
+    TOTAL += len(vagas)
     for vaga in vagas:
-        empresa = vaga.get("empresa")
-        cargo = vaga.get("cargo")
-        descricao = vaga.get("descricao")
-        salario = vaga.get("salario")
-        tags = vaga.get("tags")
-        link = vaga.get("link")
-
-        tags_str = ";".join(tags) if tags else None
-
         Vaga.objects.create(
-            empresa=empresa,
-            cargo=cargo,
-            descricao=descricao,
-            salario=salario,
-            tags=tags_str,
-            link=link,
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
             encontrado_em="InfoJobs"
         )
 
 def salvar_vagas_gupy():
-    print("Buscando vagas no Gupy...")
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no Gupy...")
     vagas = fetch_gupy_jobs("python")
-
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Gupy.\n")
+    TOTAL += len(vagas)
     for vaga in vagas:
-        empresa = vaga.get("empresa")
-        cargo = vaga.get("cargo")
-        descricao = vaga.get("descricao")
-        salario = vaga.get("salario")
-        tags = vaga.get("tags")
-        link = vaga.get("link")
-
-        tags_str = ";".join(tags) if tags else None
-
         Vaga.objects.create(
-            empresa=empresa,
-            cargo=cargo,
-            descricao=descricao,
-            salario=salario,
-            tags=tags_str,
-            link=link,
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
             encontrado_em="Gupy"
         )
 
 def salvar_vagas_vagasdotcom():
-    print("Buscando vagas no Vagas.com...")
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no Vagas.com...")
     vagas = fetch_vagas_jobs("python")
-
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Vagas.com.\n")
+    TOTAL += len(vagas)
     for vaga in vagas:
-        empresa = vaga.get("empresa")
-        cargo = vaga.get("cargo")
-        descricao = vaga.get("descricao")
-        salario = vaga.get("salario")
-        tags = vaga.get("tags")
-        link = vaga.get("link")
-
-        tags_str = ";".join(tags) if tags else None
-
         Vaga.objects.create(
-            empresa=empresa,
-            cargo=cargo,
-            descricao=descricao,
-            salario=salario,
-            tags=tags_str,
-            link=link,
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
             encontrado_em="Vagas.com"
         )
 
+def salvar_vagas_programathor():
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no Programathor...")
+    vagas = fetch_programathor_jobs("python")
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Programathor.\n")
+    TOTAL += len(vagas)
+    for vaga in vagas:
+        Vaga.objects.create(
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
+            encontrado_em="Programathor"
+        )
+
 def coletar_todas_as_vagas():
-    salvar_vagas_remoteok()
+    #salvar_vagas_remoteok()
     salvar_vagas_infojobs()
-    salvar_vagas_gupy()
-    salvar_vagas_vagasdotcom()
+    #salvar_vagas_gupy()
+    #salvar_vagas_vagasdotcom()
+    #salvar_vagas_programathor()
 
 if __name__ == "__main__":
     limpar_banco()
     coletar_todas_as_vagas()
-    print("Coleta finalizada!")
+    print(f"{Fore.MAGENTA}🎯 Coleta finalizada! Total de vagas encontradas: {TOTAL}")

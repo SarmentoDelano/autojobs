@@ -18,7 +18,11 @@ def fetch_gupy_jobs(busca):
         options.add_argument("--headless=new")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
+        options.add_argument("--disable-software-rasterizer")
         options.add_argument("--window-size=1920,1080")
+        options.add_argument("--log-level=3")              # Minimiza logs do Chrome
+        options.add_argument("--disable-logging")          # Desativa logs do Selenium
+        options.add_argument("--disable-dev-shm-usage")    # Alternativa para containers
 
         driver = webdriver.Chrome(options=options)
         driver.get(url)

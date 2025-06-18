@@ -1,8 +1,11 @@
 import time
 import re
+import os
+import subprocess
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
 def clean_text(text):
     if text:
@@ -18,9 +21,17 @@ def fetch_infojobs_jobs(busca):
         options.add_argument("--headless=new")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
+        options.add_argument("--disable-software-rasterizer")
         options.add_argument("--window-size=1920,1080")
+        options.add_argument("--log-level=3")
+        options.add_argument("--disable-logging")
+        options.add_argument("--disable-dev-shm-usage")
 
-        driver = webdriver.Chrome(options=options)
+        # ✅ SUPRIME logs visuais e console popup
+        service = Service(log_path=os.devnull)
+        service.creationflags = subprocess.CREATE_NO_WINDOW
+        driver = webdriver.Chrome(service=service, options=options)
+
         driver.get(url)
         time.sleep(5)
 
@@ -50,7 +61,7 @@ def fetch_infojobs_jobs(busca):
                     'tags': [],
                     'link': link
                 })
-            except Exception as inner_e:
+            except Exception:
                 continue
 
         driver.quit()

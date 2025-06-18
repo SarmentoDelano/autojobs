@@ -9,15 +9,19 @@ def clean_text(text):
         return re.sub(r'\s+', ' ', text).strip()
     return None
 
-def fetch_programathor_jobs():
+def fetch_programathor_jobs(busca):
     jobs = []
-    url = "https://programathor.com.br/jobs-python/remoto"
+    url = f"https://programathor.com.br/jobs-{busca}/remoto"
 
     options = Options()
     options.add_argument("--headless=new")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
+    options.add_argument("--disable-software-rasterizer")
     options.add_argument("--window-size=1920,1080")
+    options.add_argument("--log-level=3")              # Minimiza logs do Chrome
+    options.add_argument("--disable-logging")          # Desativa logs do Selenium
+    options.add_argument("--disable-dev-shm-usage")    # Alternativa para containers
 
     driver = webdriver.Chrome(options=options)
     driver.get(url)
@@ -37,6 +41,9 @@ def fetch_programathor_jobs():
 
             empresa = clean_text(empresa_el.text)
             cargo = clean_text(cargo_el.text)
+            if cargo.lower().startswith("vencida"):
+                continue  # ignora vagas vencidas
+
             tags = [tag.strip() for tag in tags_el.text.split("|") if tag.strip()]
             link = link_el.get_attribute("href")
 

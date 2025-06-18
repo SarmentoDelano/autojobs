@@ -10,6 +10,7 @@ import django
 django.setup()
 
 from core.models import Vaga
+from apis.vagas import fetch_vagas_jobs
 from apis.remoteok import fetch_remoteok_jobs
 from apis.infojobs import fetch_infojobs_jobs
 from apis.gupy import fetch_gupy_jobs
@@ -91,11 +92,35 @@ def salvar_vagas_gupy():
             encontrado_em="Gupy"
         )
 
+def salvar_vagas_vagasdotcom():
+    print("Buscando vagas no Vagas.com...")
+    vagas = fetch_vagas_jobs("python")
+
+    for vaga in vagas:
+        empresa = vaga.get("empresa")
+        cargo = vaga.get("cargo")
+        descricao = vaga.get("descricao")
+        salario = vaga.get("salario")
+        tags = vaga.get("tags")
+        link = vaga.get("link")
+
+        tags_str = ";".join(tags) if tags else None
+
+        Vaga.objects.create(
+            empresa=empresa,
+            cargo=cargo,
+            descricao=descricao,
+            salario=salario,
+            tags=tags_str,
+            link=link,
+            encontrado_em="Vagas.com"
+        )
+
 def coletar_todas_as_vagas():
     salvar_vagas_remoteok()
     salvar_vagas_infojobs()
     salvar_vagas_gupy()
-
+    salvar_vagas_vagasdotcom()
 
 if __name__ == "__main__":
     limpar_banco()

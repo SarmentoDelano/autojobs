@@ -1,29 +1,31 @@
 import time
 import re
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 
 def clean_text(text):
     return re.sub(r'\s+', ' ', text).strip() if text else None
 
+# Subclasse que impede erro no __del__
+class SilentChrome(uc.Chrome):
+    def __del__(self):
+        pass
+
 def fetch_vagas_jobs(busca):
+    driver = None
     try:
         jobs = []
         url = f"https://www.vagas.com.br/vagas-de-{busca}?m%5B%5D=100%25+Home+Office"
 
-        options = Options()
+        options = uc.ChromeOptions()
         options.add_argument("--headless=new")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-software-rasterizer")
         options.add_argument("--window-size=1920,1080")
-        options.add_argument("--log-level=3")              # Minimiza logs do Chrome
-        options.add_argument("--disable-logging")          # Desativa logs do Selenium
-        options.add_argument("--disable-dev-shm-usage")    # Alternativa para containers
+        options.add_argument("--disable-dev-shm-usage")
 
-
-        driver = webdriver.Chrome(options=options)
+        driver = SilentChrome(options=options, headless=True, use_subprocess=True)
         driver.get(url)
         time.sleep(5)
 
@@ -58,9 +60,20 @@ def fetch_vagas_jobs(busca):
             except Exception:
                 continue
 
-        driver.quit()
+        if driver:
+            try:
+                driver.quit()
+            except:
+                pass
+            driver = None
+
         return jobs
 
     except Exception as e:
         print(f"[Vagas.com] Erro ao buscar vagas: {e}")
+        if driver:
+            try:
+                driver.quit()
+            except:
+                pass
         return []

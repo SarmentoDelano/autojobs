@@ -16,6 +16,8 @@ from apis.remoteok import fetch_remoteok_jobs
 from apis.infojobs import fetch_infojobs_jobs
 from apis.gupy import fetch_gupy_jobs
 from apis.programathor import fetch_programathor_jobs
+from apis.remotar import fetch_remotar_jobs
+
 
 TOTAL = 0
 
@@ -108,12 +110,30 @@ def salvar_vagas_programathor():
             encontrado_em="Programathor"
         )
 
+def salvar_vagas_remotar():
+    global TOTAL
+    print(f"{Fore.CYAN}🌐 Buscando vagas no Remotar...")
+    vagas = fetch_remotar_jobs("python")
+    print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Remotar.\n")
+    TOTAL += len(vagas)
+    for vaga in vagas:
+        Vaga.objects.create(
+            empresa=vaga.get("empresa"),
+            cargo=vaga.get("cargo"),
+            descricao=vaga.get("descricao"),
+            salario=vaga.get("salario"),
+            tags=";".join(vaga.get("tags") or []),
+            link=vaga.get("link"),
+            encontrado_em="Remotar"
+        )
+
 def coletar_todas_as_vagas():
-    #salvar_vagas_remoteok()
+    salvar_vagas_remotar()
     salvar_vagas_infojobs()
-    #salvar_vagas_gupy()
-    #salvar_vagas_vagasdotcom()
-    #salvar_vagas_programathor()
+    salvar_vagas_gupy()
+    salvar_vagas_vagasdotcom()
+    salvar_vagas_programathor()
+    salvar_vagas_remoteok()
 
 if __name__ == "__main__":
     limpar_banco()

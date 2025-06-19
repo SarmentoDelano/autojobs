@@ -1,37 +1,33 @@
 import time
 import re
-import os
-import subprocess
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 
 def clean_text(text):
     if text:
         return re.sub(r'\s+', ' ', text).strip()
     return None
 
+# Subclasse que anula __del__ do driver
+class SilentChrome(uc.Chrome):
+    def __del__(self):
+        pass
+
 def fetch_infojobs_jobs(busca):
+    driver = None
     try:
         jobs = []
         url = f"https://www.infojobs.com.br/vagas-de-emprego-{busca}-trabalho-home-office.aspx"
 
-        options = Options()
+        options = uc.ChromeOptions()
         options.add_argument("--headless=new")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-software-rasterizer")
         options.add_argument("--window-size=1920,1080")
-        options.add_argument("--log-level=3")
-        options.add_argument("--disable-logging")
         options.add_argument("--disable-dev-shm-usage")
 
-        # ✅ SUPRIME logs visuais e console popup
-        service = Service(log_path=os.devnull)
-        service.creationflags = subprocess.CREATE_NO_WINDOW
-        driver = webdriver.Chrome(service=service, options=options)
-
+        driver = SilentChrome(options=options, headless=True, use_subprocess=True)
         driver.get(url)
         time.sleep(5)
 
@@ -64,9 +60,20 @@ def fetch_infojobs_jobs(busca):
             except Exception:
                 continue
 
-        driver.quit()
+        if driver:
+            try:
+                driver.quit()
+            except Exception:
+                pass
+            driver = None
+
         return jobs
 
     except Exception as e:
         print(f"[InfoJobs] Erro ao buscar vagas: {e}")
+        if driver:
+            try:
+                driver.quit()
+            except:
+                pass
         return []

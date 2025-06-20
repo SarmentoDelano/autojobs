@@ -20,7 +20,8 @@ Ideal para quem busca praticidade, foco em tecnologia e centralização de busca
 
 ## 💻 Interface
 
-![Preview](screenshots/job-listing.png)
+![image](https://github.com/user-attachments/assets/cd9922e6-ec13-4132-b552-02c02142e3a7)
+
 
 ### 🎯 Funcionalidades:
 - 🔍 Busca por palavra-chave

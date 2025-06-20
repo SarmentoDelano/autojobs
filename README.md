@@ -45,9 +45,8 @@ Ideal para quem busca praticidade, foco em tecnologia e centralização de busca
 - Axios
 - EventSource (streaming de progresso)
 
-### Outros
+### Banco de Dados
 - PostgreSQL
-- Figma (protótipos)
 
 ---
 

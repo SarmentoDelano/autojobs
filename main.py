@@ -20,6 +20,7 @@ from apis.remotar import fetch_remotar_jobs
 
 
 TOTAL = 0
+BUSCA = sys.argv[1] if len(sys.argv) > 1 else "python"  # palavra-chave opcional
 
 def limpar_banco():
     print(f"{Fore.YELLOW}🧹 Limpando banco de dados...")
@@ -28,7 +29,7 @@ def limpar_banco():
 def salvar_vagas_remoteok():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no RemoteOK...")
-    vagas = fetch_remoteok_jobs("python")
+    vagas = fetch_remoteok_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no RemoteOK.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -45,7 +46,7 @@ def salvar_vagas_remoteok():
 def salvar_vagas_infojobs():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no InfoJobs...")
-    vagas = fetch_infojobs_jobs("python")
+    vagas = fetch_infojobs_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no InfoJobs.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -62,7 +63,7 @@ def salvar_vagas_infojobs():
 def salvar_vagas_gupy():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no Gupy...")
-    vagas = fetch_gupy_jobs("python")
+    vagas = fetch_gupy_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Gupy.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -79,7 +80,7 @@ def salvar_vagas_gupy():
 def salvar_vagas_vagasdotcom():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no Vagas.com...")
-    vagas = fetch_vagas_jobs("python")
+    vagas = fetch_vagas_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Vagas.com.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -96,7 +97,7 @@ def salvar_vagas_vagasdotcom():
 def salvar_vagas_programathor():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no Programathor...")
-    vagas = fetch_programathor_jobs("python")
+    vagas = fetch_programathor_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Programathor.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -113,7 +114,7 @@ def salvar_vagas_programathor():
 def salvar_vagas_remotar():
     global TOTAL
     print(f"{Fore.CYAN}🌐 Buscando vagas no Remotar...")
-    vagas = fetch_remotar_jobs("python")
+    vagas = fetch_remotar_jobs(BUSCA)
     print(f"{Fore.GREEN}✅ Encontradas {len(vagas)} vagas no Remotar.\n")
     TOTAL += len(vagas)
     for vaga in vagas:
@@ -136,6 +137,7 @@ def coletar_todas_as_vagas():
     salvar_vagas_remoteok()
 
 if __name__ == "__main__":
+    print(f"{Fore.BLUE}🔍 Palavra-chave de busca: {BUSCA}")
     limpar_banco()
     coletar_todas_as_vagas()
     print(f"{Fore.MAGENTA}🎯 Coleta finalizada! Total de vagas encontradas: {TOTAL}")

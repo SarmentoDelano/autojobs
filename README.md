@@ -1,7 +1,7 @@
 # 🤖 AutoJobs
 
 <p align="center">
-  <img src="public/robot-icon.png" width="100" alt="AutoJobs logo">
+  <img src="frontend/public/robot-icon.png" alt="AutoJobs logo" width="120"/>
 </p>
 
 Sistema inteligente para busca automática de vagas em diversos sites de emprego.

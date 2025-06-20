@@ -1,3 +1,4 @@
+// src/App.js
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import FilterSidebar from './components/FilterSidebar';
@@ -10,17 +11,17 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const vagasPorPagina = 15;
 
-  useEffect(() => {
-    const fetchVagas = async () => {
-      try {
-        const response = await api.get('/vagas/');
-        setTodasAsVagas(response.data);
-        setVagasFiltradas(response.data); // exibir todas inicialmente
-      } catch (error) {
-        console.error('Erro ao buscar vagas:', error);
-      }
-    };
+  const fetchVagas = async () => {
+    try {
+      const response = await api.get('/vagas/');
+      setTodasAsVagas(response.data);
+      setVagasFiltradas(response.data); // exibir todas inicialmente
+    } catch (error) {
+      console.error('Erro ao buscar vagas:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchVagas();
   }, []);
 
@@ -36,12 +37,16 @@ function App() {
     });
 
     setVagasFiltradas(filtradas);
-    setCurrentPage(1); // resetar para página inicial
+    setCurrentPage(1);
   };
 
   const totalPaginas = Math.ceil(vagasFiltradas.length / vagasPorPagina);
   const startIndex = (currentPage - 1) * vagasPorPagina;
-  const vagasVisiveis = vagasFiltradas.slice(startIndex, startIndex + vagasPorPagina);
+  const favoritas = vagasFiltradas.filter(v => v.favorita);
+  const outras = vagasFiltradas.filter(v => !v.favorita);
+  const vagasOrdenadas = [...favoritas, ...outras];
+  const vagasVisiveis = vagasOrdenadas.slice(startIndex, startIndex + vagasPorPagina);
+
 
   const mudarPagina = (pagina) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
@@ -70,18 +75,20 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#E8F1F2]">
-      <Header />
+      <Header onColetaFinalizada={fetchVagas} />
       <div className="flex">
-        <FilterSidebar onFilter={aplicarFiltros} />
+        <FilterSidebar onFilter={aplicarFiltros} onColetaFinalizada={fetchVagas} />
         <main className="flex-1 p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {vagasVisiveis.map((vaga, index) => (
+            {vagasVisiveis.map((vaga) => (
               <JobCard
-                key={index}
+                key={vaga.id}
+                id={vaga.id}
                 empresa={vaga.empresa}
                 cargo={vaga.cargo}
                 tags={vaga.tags?.split(';')}
                 link={vaga.link}
+                favorita={vaga.favorita}
               />
             ))}
           </div>

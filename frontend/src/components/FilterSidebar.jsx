@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-function FilterSidebar({ onFilter }) {
+function FilterSidebar({ onFilter, onColetaFinalizada }) {
   const [selectedSites, setSelectedSites] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [limpando, setLimpando] = useState(false);
@@ -30,6 +30,13 @@ function FilterSidebar({ onFilter }) {
       const response = await axios.post('http://localhost:8000/api/limpar-vagas/');
       alert('🧹 Banco limpo com sucesso!');
       console.log(response.data);
+
+      setSelectedSites([]);
+      setKeyword('');
+      onFilter({ sites: [], keyword: '' });
+
+      // ✅ Atualiza as vagas na tela
+      if (onColetaFinalizada) onColetaFinalizada();
     } catch (error) {
       console.error('Erro ao limpar banco:', error);
       alert('❌ Erro ao limpar banco. Veja o console.');

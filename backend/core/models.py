@@ -8,6 +8,7 @@ class Vaga(models.Model):
     tags = models.TextField(blank=True, null=True)  # Ex: "python;django;remoto"
     link = models.URLField(max_length=1000, blank=True, null=True)
     encontrado_em = models.CharField(max_length=255, blank=True, null=True)
+    favorita = models.BooleanField(default=False)  # <- NOVO CAMPO
 
     def __str__(self):
         return f"{self.empresa} - {self.cargo}"

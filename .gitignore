@@ -51,3 +51,23 @@ pip-wheel-metadata/
 
 # Selenium (caso gere screenshots temporários no futuro)
 selenium_screenshots/
+
+# Migrations (exceto se quiser versionar elas)
+**/migrations/
+!**/migrations/__init__.py
+
+# === FRONTEND (React) ===
+frontend/node_modules/
+frontend/build/
+frontend/.pnp/
+frontend/.pnp.js
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# === Sistema operacional ===
+*.swp
+Thumbs.db
+ehthumbs.db
+Desktop.ini

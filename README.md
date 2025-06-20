@@ -77,18 +77,6 @@ npm install
 npm start
 ```
 
----
-
-## 🧠 O que esse projeto demonstra (para recrutadores)
-
-- Domínio de Python, Django e scraping com Selenium
-- Integração full-stack (API REST + React + Tailwind)
-- Utilização de SSE (Server-Sent Events) para UX reativa
-- Organização modular e extensível
-- Boa experiência visual com foco em usabilidade
-
----
-
 ## 📄 Licença
 Projeto pessoal com fins educacionais. Código aberto sob a licença MIT.
 
@@ -96,5 +84,5 @@ Projeto pessoal com fins educacionais. Código aberto sob a licença MIT.
 
 ## ✉️ Contato
 
-Feito por [Seu Nome].  
-[LinkedIn](https://linkedin.com/in/seuusuario) | [GitHub](https://github.com/seuusuario)
+Feito por Delano Sarmento.  
+[LinkedIn](https://www.linkedin.com/in/delanosarmento/) | [GitHub](https://github.com/SarmentoDelano)
